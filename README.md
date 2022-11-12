@@ -1,3 +1,6 @@
 # React for Beginners
+영화 정보 사이트
 
-Learning React From Zero to Ninja
+
+
+니꼬 땡큐 쏘 머치
