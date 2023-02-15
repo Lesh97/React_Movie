@@ -1,6 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import Router from "./Router";
-import { ReactQueryDevtools } from "react-query/devtools";
+import ToDoList from "./components/ToDoList";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;800;900&family=Poppins:wght@200;400;500;600;700&display=swap');
@@ -67,8 +66,7 @@ function App() {
   return (
     <>
       <GlobalStyle></GlobalStyle>
-      <Router></Router>
-      <ReactQueryDevtools initialIsOpen={true}></ReactQueryDevtools>
+      <ToDoList></ToDoList>
     </>
   );
 }
