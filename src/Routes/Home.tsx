@@ -7,6 +7,8 @@ import {
   getMoviesTop,
   getMoviesUpComing,
   IGetMoviesResult,
+  LIST_TYPE,
+  getTvshows,
 } from "../api";
 import { makeImagePath } from "../utils";
 import { useState } from "react";
@@ -49,14 +51,20 @@ const Overview = styled.p`
 
 const Slider = styled.div`
   position: relative;
+  margin-bottom: 100px;
   top: -150px;
+`;
+
+const H1 = styled.p`
+  font-size: 40px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 `;
 
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  position: absolute;
   width: 100%;
   top: -100px;
 `;
@@ -134,6 +142,13 @@ const BigOverview = styled.p`
   top: -70px;
 `;
 
+const NowPlaying = styled.div`
+  width: 100%;
+  height: 30px;
+  color: white;
+  font-size: 30px;
+`;
+
 const infoVar = {
   hover: {
     opacity: 1,
@@ -179,20 +194,9 @@ function Home() {
   const bigMovieMatch = useRouteMatch<{ movieId: string }>("/movies/:movieId");
   const { scrollY } = useScroll();
   const { data, isLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "nowPlaying"],
+    [LIST_TYPE[0], "nowPlayingMovies"],
     getMovies
   );
-  const useMultipleQuery = () => {
-    const latest = useQuery(["latest"], getMoviesLatest);
-    const topRated = useQuery(["topRated"], getMoviesTop);
-    const upComming = useQuery(["upComming"], getMoviesUpComing);
-    return [latest, topRated, upComming];
-  };
-  const [
-    { isLoading: loadingLatest, data: latestData },
-    { isLoading: loadingTopRated, data: topRatedData },
-    { isLoading: loadingUpComming, data: upCommingData },
-  ] = useMultipleQuery();
 
   const [index, setIndex] = useState(0);
   const increaseIndex = () => {
@@ -226,134 +230,143 @@ function Home() {
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[1].overview}</Overview>
           </Banner>
-          <Slider>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVar}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                key={index}
-                transition={{ type: "tween", duration: 1 }}
-              >
-                {data?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={movie.id + ""}
-                      key={movie.id}
-                      variants={boxVar}
-                      onClick={() => onBoxClicked(movie.id)}
-                      whileHover="hover"
-                      initial="normal"
-                      transition={{ type: "tween" }}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    >
-                      <Info variants={infoVar}>
-                        <h4>{movie.title}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-          </Slider>
-          <Slider>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVar}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                key={index}
-                transition={{ type: "tween", duration: 1 }}
-              >
-                {data?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={movie.id + ""}
-                      key={movie.id}
-                      variants={boxVar}
-                      onClick={() => onBoxClicked(movie.id)}
-                      whileHover="hover"
-                      initial="normal"
-                      transition={{ type: "tween" }}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    >
-                      <Info variants={infoVar}>
-                        <h4>{movie.title}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-          </Slider>
-          <Slider>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVar}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                key={index}
-                transition={{ type: "tween", duration: 1 }}
-              >
-                {data?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={movie.id + ""}
-                      key={movie.id}
-                      variants={boxVar}
-                      onClick={() => onBoxClicked(movie.id)}
-                      whileHover="hover"
-                      initial="normal"
-                      transition={{ type: "tween" }}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    >
-                      <Info variants={infoVar}>
-                        <h4>{movie.title}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-          </Slider>
-          <Slider>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-              <Row
-                variants={rowVar}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                key={index}
-                transition={{ type: "tween", duration: 1 }}
-              >
-                {data?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie) => (
-                    <Box
-                      layoutId={movie.id + ""}
-                      key={movie.id}
-                      variants={boxVar}
-                      onClick={() => onBoxClicked(movie.id)}
-                      whileHover="hover"
-                      initial="normal"
-                      transition={{ type: "tween" }}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                    >
-                      <Info variants={infoVar}>
-                        <h4>{movie.title}</h4>
-                      </Info>
-                    </Box>
-                  ))}
-              </Row>
-            </AnimatePresence>
-          </Slider>
+
+          <>
+            <Slider>
+              <H1>현재 상영중</H1>
+              <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                <Row
+                  variants={rowVar}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  key={index}
+                  transition={{ type: "tween", duration: 1 }}
+                >
+                  {data?.results
+                    .slice(1)
+                    .slice(offset * index, offset * index + offset)
+                    .map((movie) => (
+                      <Box
+                        layoutId={movie.id + ""}
+                        key={movie.id}
+                        variants={boxVar}
+                        onClick={() => onBoxClicked(movie.id)}
+                        whileHover="hover"
+                        initial="normal"
+                        transition={{ type: "tween" }}
+                        bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      >
+                        <Info variants={infoVar}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+
+            <Slider>
+              <H1>현재 상영중2</H1>
+              <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                <Row
+                  variants={rowVar}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  key={index}
+                  transition={{ type: "tween", duration: 1 }}
+                >
+                  {data?.results
+                    .slice(1)
+                    .slice(offset * index, offset * index + offset)
+                    .map((movie) => (
+                      <Box
+                        layoutId={movie.id + ""}
+                        key={movie.id}
+                        variants={boxVar}
+                        onClick={() => onBoxClicked(movie.id)}
+                        whileHover="hover"
+                        initial="normal"
+                        transition={{ type: "tween" }}
+                        bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      >
+                        <Info variants={infoVar}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+            <Slider>
+              <H1>현재 상영중3</H1>
+              <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                <Row
+                  variants={rowVar}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  key={index}
+                  transition={{ type: "tween", duration: 1 }}
+                >
+                  {data?.results
+                    .slice(1)
+                    .slice(offset * index, offset * index + offset)
+                    .map((movie) => (
+                      <Box
+                        layoutId={movie.id + ""}
+                        key={movie.id}
+                        variants={boxVar}
+                        onClick={() => onBoxClicked(movie.id)}
+                        whileHover="hover"
+                        initial="normal"
+                        transition={{ type: "tween" }}
+                        bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      >
+                        <Info variants={infoVar}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+            <Slider>
+              <H1>현재 상영중4</H1>
+              <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+                <Row
+                  variants={rowVar}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  key={index}
+                  transition={{ type: "tween", duration: 1 }}
+                >
+                  {data?.results
+                    .slice(1)
+                    .slice(offset * index, offset * index + offset)
+                    .map((movie) => (
+                      <Box
+                        layoutId={movie.id + ""}
+                        key={movie.id}
+                        variants={boxVar}
+                        onClick={() => onBoxClicked(movie.id)}
+                        whileHover="hover"
+                        initial="normal"
+                        transition={{ type: "tween" }}
+                        bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      >
+                        <Info variants={infoVar}>
+                          <h4>{movie.title}</h4>
+                        </Info>
+                      </Box>
+                    ))}
+                </Row>
+              </AnimatePresence>
+            </Slider>
+          </>
+
           <AnimatePresence>
             {bigMovieMatch ? (
               <>
