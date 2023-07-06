@@ -4,13 +4,16 @@ import { makeImagePath } from "../utils";
 import MovieSlider from "../Components/Sliders/MovieSlider";
 import {
   Banner,
-  Loader,
   Overview,
   Title,
-  Wrapper,
 } from "../Components/styled-components/MovieStyled";
 import TvSlider from "../Components/Sliders/TvSlider";
 import { Helmet } from "react-helmet";
+import {
+  Footer,
+  Loader,
+  Wrapper,
+} from "../Components/styled-components/MainStyled";
 
 function Tv() {
   const { data: airing_data, isLoading: airing_loading } = useQuery<IGetResult>(
@@ -70,6 +73,7 @@ function Tv() {
           ></TvSlider>
         </>
       )}
+      <Footer>copyright &copy; by 저작권은 넷플릭스, 데이터는 moviedb</Footer>
     </Wrapper>
   );
 }

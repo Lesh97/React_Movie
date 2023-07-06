@@ -51,6 +51,7 @@ export const Item = styled.li`
 export const Search = styled.form`
   color: white;
   display: flex;
+  width: 50px;
   align-items: center;
   position: relative;
   right: 150px;
@@ -72,6 +73,7 @@ export const Circle = styled(motion.span)`
 `;
 
 export const Input = styled(motion.input)`
+  width: 270px;
   transform-origin: right center;
   position: absolute;
   right: 0px;

@@ -100,7 +100,7 @@ function Header() {
             animate={inputAnimation}
             transition={{ type: "linear" }}
             initial={{ scaleX: 0 }}
-            placeholder="Search for movie or tv show..."
+            placeholder="영화와 TV시리즈를 검색하세요..."
           ></Input>
         </Search>
       </Col>

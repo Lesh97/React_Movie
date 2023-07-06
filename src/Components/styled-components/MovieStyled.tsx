@@ -1,19 +1,5 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
-
-// 화면 전체를 감싸는 div
-export const Wrapper = styled.div`
-  background: black;
-  overflow-x: hidden;
-  height: 100vh;
-`;
-// Loading이 걸릴 시 나오는 div
-export const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 // 메인에서 크게 나오는 메인 작품 한 개
 export const Banner = styled.div<{ bgphoto: string }>`
   height: 100vh;

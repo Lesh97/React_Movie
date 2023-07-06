@@ -3,13 +3,16 @@ import { getMovies, IGetResult } from "../api";
 import { makeImagePath } from "../utils";
 import {
   Banner,
-  Loader,
   Overview,
   Title,
-  Wrapper,
 } from "../Components/styled-components/MovieStyled";
 import MovieSlider from "../Components/Sliders/MovieSlider";
 import { Helmet } from "react-helmet";
+import {
+  Footer,
+  Loader,
+  Wrapper,
+} from "../Components/styled-components/MainStyled";
 
 function Home() {
   const { data: now_data, isLoading: now_loading } = useQuery<IGetResult>(
@@ -66,6 +69,7 @@ function Home() {
           ></MovieSlider>
         </>
       )}
+      <Footer>copyright &copy; by 저작권은 넷플릭스, 데이터는 moviedb</Footer>
     </Wrapper>
   );
 }
