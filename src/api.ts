@@ -25,7 +25,6 @@ export interface IGetDetails {
   id: number;
   backdrop_path: string;
   poster_path: string;
-
   overview: string;
   vote_average: number;
   genres: [

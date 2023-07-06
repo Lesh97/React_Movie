@@ -25,7 +25,6 @@ function Header() {
   const tvMatch = useRouteMatch("/tv");
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
-  const { scrollY } = useScroll();
   const toggleSearch = () => {
     if (searchOpen) {
       inputAnimation.start({
@@ -38,9 +37,10 @@ function Header() {
     }
     setSearchOpen((prev) => !prev);
   };
+  const { scrollY } = useScroll();
   useEffect(() => {
     scrollY.onChange(() => {
-      if (scrollY.get() > 100) {
+      if (scrollY.get() > 50) {
         navAnimation.start("scroll");
       } else {
         navAnimation.start("top");

@@ -53,7 +53,7 @@ function MovieOverlay({ category, id, data }: IOverlayProps) {
   const director = creditData?.crew.find(
     (person) => person.known_for_department === "Directing"
   );
-  const releaseDate = detailData?.release_date.substring(0, 4);
+  const releaseDate = detailData?.release_date.substring(0, 5);
 
   const history = useHistory();
   const onBoxClicked = () => {
@@ -66,7 +66,7 @@ function MovieOverlay({ category, id, data }: IOverlayProps) {
   }, [id]);
   return (
     <>
-      {detailLoading && creditLoading} ? ("") : (
+      {detailLoading && creditLoading}
       <>
         <DetailOverlay
           variants={overlayVar}
@@ -138,7 +138,6 @@ function MovieOverlay({ category, id, data }: IOverlayProps) {
           </Detail_Info_Bottom>
         </DetailModal>
       </>
-      )
     </>
   );
 }

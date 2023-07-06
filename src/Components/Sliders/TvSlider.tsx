@@ -10,7 +10,7 @@ import {
   Row,
   Slider,
 } from "../styled-components/MovieStyled";
-import MovieOverlay from "./MovieOverlay";
+import TvOverlay from "./TvOverlay";
 
 const infoVar = {
   hover: {
@@ -72,11 +72,9 @@ const TvSlider = (props: IBannerProps) => {
   const [leaving, setLeaving] = useState(false);
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onBoxClicked = (seriesId: number) => {
-    history.push(`/movies/${seriesId}`);
+    history.push(`/tv/${seriesId}`);
   };
-  const bigMovieMatch = useRouteMatch<{ seriesId: string }>(
-    "/movies/:seriesId"
-  );
+  const bigMovieMatch = useRouteMatch<{ seriesId: string }>("/tv/:seriesId");
 
   return (
     <>
@@ -94,19 +92,19 @@ const TvSlider = (props: IBannerProps) => {
             {props.data?.results
               .slice(1)
               .slice(offset * index, offset * index + offset)
-              .map((series) => (
+              .map((Series) => (
                 <Box
-                  layoutId={series.id + ""}
-                  key={props.category + series.id}
+                  layoutId={Series.id + ""}
+                  key={props.category + Series.id}
                   variants={boxVar}
-                  onClick={() => onBoxClicked(series.id)}
+                  onClick={() => onBoxClicked(Series.id)}
                   whileHover="hover"
                   initial="normal"
                   transition={{ type: "tween" }}
-                  bgPhoto={makeImagePath(series.backdrop_path, "w500")}
+                  bgPhoto={makeImagePath(Series?.backdrop_path, "w500")}
                 >
                   <Info variants={infoVar}>
-                    <h4>{series.title}</h4>
+                    <h4>{Series.name}</h4>
                   </Info>
                 </Box>
               ))}
@@ -115,11 +113,11 @@ const TvSlider = (props: IBannerProps) => {
       </Slider>
       {bigMovieMatch ? (
         <>
-          <MovieOverlay
-            id={bigMovieMatch.params.seriesId}
+          <TvOverlay
+            tv_id={bigMovieMatch.params.seriesId}
             category={props.category}
             data={props.data}
-          ></MovieOverlay>
+          ></TvOverlay>
         </>
       ) : null}
     </>

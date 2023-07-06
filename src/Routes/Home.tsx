@@ -8,7 +8,8 @@ import {
   Title,
   Wrapper,
 } from "../Components/styled-components/MovieStyled";
-import TvSlider from "../Components/Sliders/TvSlider";
+import MovieSlider from "../Components/Sliders/MovieSlider";
+import { Helmet } from "react-helmet";
 
 function Home() {
   const { data: now_data, isLoading: now_loading } = useQuery<IGetResult>(
@@ -34,33 +35,35 @@ function Home() {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          {" "}
+          <Helmet>
+            <title>넷플릭스</title>
+          </Helmet>{" "}
           <Banner
             bgphoto={makeImagePath(now_data?.results[0].backdrop_path || "")}
           >
             <Title>{now_data?.results[0].title}</Title>
             <Overview>{now_data?.results[1].overview}</Overview>
           </Banner>
-          <TvSlider
+          <MovieSlider
             category="now_playing"
             title="현재 상영중"
             data={now_data}
-          ></TvSlider>
-          <TvSlider
+          ></MovieSlider>
+          <MovieSlider
             category="popular"
             title="가장 인기있는 영화"
             data={popular}
-          ></TvSlider>
-          <TvSlider
+          ></MovieSlider>
+          <MovieSlider
             category="top_rated"
             title="평점이 높은 영화"
             data={top_rated}
-          ></TvSlider>
-          <TvSlider
+          ></MovieSlider>
+          <MovieSlider
             category="upcoming"
             title="개봉 예정작"
             data={upcoming}
-          ></TvSlider>
+          ></MovieSlider>
         </>
       )}
     </Wrapper>

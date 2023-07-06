@@ -28,45 +28,47 @@ import { useEffect } from "react";
 interface IOverlayProps {
   data: IGetResult | undefined;
   category?: string;
-  id: string;
+  tv_id: string;
 }
 
-function TvOverlay({ category, id, data }: IOverlayProps) {
+function TvOverlay({ category, tv_id, data }: IOverlayProps) {
   //영화 api
   const {
     data: detailData,
     isLoading: detailLoading,
     refetch: detailRefetch,
-  } = useQuery<IGetDetails>(["series", `${category}_detail`, id], () =>
-    getSeriesDetail(id)
+  } = useQuery<IGetDetails>(
+    ["series_detail", `${category}_detail`, tv_id],
+    () => getSeriesDetail(tv_id)
   );
   //TV api
   const {
     data: creditData,
     isLoading: creditLoading,
     refetch: refetchCredit,
-  } = useQuery<IGetCredits>(["series", `${category}_credit`, id], () =>
-    getSeriesCredit(id)
+  } = useQuery<IGetCredits>(
+    ["series-credit", `${category}_credit`, tv_id],
+    () => getSeriesCredit(tv_id)
   );
 
   const actor = creditData?.cast.slice(0, 5);
   const director = creditData?.crew.find(
     (person) => person.known_for_department === "Directing"
   );
-  const releaseDate = detailData?.release_date.substring(0, 4);
+  const releaseDate = detailData?.first_air_date.substring(0, 5);
 
   const history = useHistory();
   const onBoxClicked = () => {
-    history.push(`/`);
+    history.push(`/tv`);
   };
 
   useEffect(() => {
     refetchCredit();
     detailRefetch();
-  }, [id]);
+  }, [tv_id]);
   return (
     <>
-      {detailLoading && creditLoading} ? ("") : (
+      {detailLoading && creditLoading}
       <>
         <DetailOverlay
           variants={overlayVar}
@@ -84,9 +86,7 @@ function TvOverlay({ category, id, data }: IOverlayProps) {
           {detailData ? (
             <Helmet>
               <title>
-                {detailData.title
-                  ? detailData.title
-                  : detailData.original_title}
+                {detailData.name ? detailData.name : detailData.original_name}
               </title>
             </Helmet>
           ) : (
@@ -119,7 +119,9 @@ function TvOverlay({ category, id, data }: IOverlayProps) {
           </Detail_Info_Top>
           <Detail_Info_Bottom>
             <DetailPoster_Overview>
-              {detailData?.overview}
+              {detailData?.overview
+                ? detailData?.overview
+                : "요약이 제공되지 않는 작품입니다."}
             </DetailPoster_Overview>
             <DetailPoster_Actor_Director>
               <DetailPoster_Actor>
@@ -138,7 +140,6 @@ function TvOverlay({ category, id, data }: IOverlayProps) {
           </Detail_Info_Bottom>
         </DetailModal>
       </>
-      )
     </>
   );
 }
