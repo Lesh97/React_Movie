@@ -109,3 +109,16 @@ export const navVar = {
     backgroundColor: "rgba(0,0,0,0)",
   },
 };
+
+export const SignIn = styled.button`
+  width: 90px;
+  height: 40px;
+  background-color: ${(props) => props.theme.red};
+  color: ${(props) => props.theme.white.lighter};
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  border: none;
+`;

@@ -13,6 +13,7 @@ import {
   Circle,
   Search,
   Input,
+  SignIn,
 } from "./styled-components/HeaderStyled";
 
 interface IForm {
@@ -103,6 +104,10 @@ function Header() {
             placeholder="영화와 TV시리즈를 검색하세요..."
           ></Input>
         </Search>
+
+        <SignIn>
+          <Link to="/login"> 로그인</Link>
+        </SignIn>
       </Col>
     </Nav>
   );
