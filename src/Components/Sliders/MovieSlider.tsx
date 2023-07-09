@@ -9,8 +9,14 @@ import {
   Info,
   Row,
   Slider,
+  SliderContainer,
+  SliderPrevBtn,
+  SliderNextBtn,
 } from "../styled-components/MovieStyled";
 import MovieOverlay from "./MovieOverlay";
+
+import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const infoVar = {
   hover: {
@@ -39,14 +45,14 @@ const boxVar = {
 };
 
 const rowVar = {
-  hidden: {
-    x: window.outerWidth - 10,
+  hidden: (next: boolean) => {
+    return { x: next ? window.innerWidth : -window.innerWidth };
   },
   visible: {
     x: 0,
   },
-  exit: {
-    x: -window.outerWidth + 10,
+  exit: (next: boolean) => {
+    return { x: next ? -window.innerWidth : window.innerWidth };
   },
 };
 interface IBannerProps {
@@ -58,15 +64,30 @@ const offset = 6;
 
 const MovieSlider = (props: IBannerProps) => {
   const history = useHistory();
-
+  const [next, setNext] = useState(true);
   const [index, setIndex] = useState(0);
   const increaseIndex = () => {
     if (props.data) {
       if (leaving) return;
-      toggleLeaving();
-      const totalMovies = props.data.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
-      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+      else {
+        toggleLeaving();
+        const totalMovies = props.data.results.length - 1;
+        const maxIndex = Math.floor(totalMovies / offset) - 1;
+        setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+        setNext(() => true);
+      }
+    }
+  };
+  const decreaseIndex = () => {
+    if (props.data) {
+      if (leaving) return;
+      else {
+        toggleLeaving();
+        const totalMovies = props.data.results.length - 1;
+        const maxIndex = Math.floor(totalMovies / offset) - 1;
+        setIndex((prev) => (prev === 0 ? maxIndex - 1 : prev - 1));
+        setNext(() => false);
+      }
     }
   };
   const [leaving, setLeaving] = useState(false);
@@ -80,36 +101,49 @@ const MovieSlider = (props: IBannerProps) => {
     <>
       <Slider>
         <SliderTitle>{props.title}</SliderTitle>
-        <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-          <Row
-            variants={rowVar}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            key={props.category + index}
-            transition={{ type: "tween", duration: 1 }}
+        <SliderContainer>
+          <SliderPrevBtn onClick={decreaseIndex}>
+            <FontAwesomeIcon icon={faAngleLeft} />
+          </SliderPrevBtn>
+          <AnimatePresence
+            custom={next}
+            initial={false}
+            onExitComplete={toggleLeaving}
           >
-            {props.data?.results
-              .slice(1)
-              .slice(offset * index, offset * index + offset)
-              .map((movie) => (
-                <Box
-                  layoutId={movie.id + ""}
-                  key={props.category + movie.id}
-                  variants={boxVar}
-                  onClick={() => onBoxClicked(movie.id)}
-                  whileHover="hover"
-                  initial="normal"
-                  transition={{ type: "tween" }}
-                  bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
-                >
-                  <Info variants={infoVar}>
-                    <h4>{movie.title}</h4>
-                  </Info>
-                </Box>
-              ))}
-          </Row>
-        </AnimatePresence>
+            <Row
+              variants={rowVar}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              key={props.category + index}
+              custom={next}
+              transition={{ type: "tween", duration: 1 }}
+            >
+              {props.data?.results
+                .slice(1)
+                .slice(offset * index, offset * index + offset)
+                .map((movie) => (
+                  <Box
+                    layoutId={movie.id + ""}
+                    key={props.category + movie.id}
+                    variants={boxVar}
+                    onClick={() => onBoxClicked(movie.id)}
+                    whileHover="hover"
+                    initial="normal"
+                    transition={{ type: "tween" }}
+                    bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                  >
+                    <Info variants={infoVar}>
+                      <h4>{movie.title}</h4>
+                    </Info>
+                  </Box>
+                ))}
+            </Row>
+          </AnimatePresence>
+          <SliderNextBtn onClick={increaseIndex}>
+            <FontAwesomeIcon icon={faAngleRight} />
+          </SliderNextBtn>
+        </SliderContainer>
       </Slider>
       {bigMovieMatch ? (
         <>

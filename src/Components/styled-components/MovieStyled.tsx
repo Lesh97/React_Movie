@@ -32,7 +32,7 @@ export const Slider = styled.div`
 //슬라이더 제목
 export const SliderTitle = styled.p`
   font-size: 40px;
-  margin-left: 10px;
+  margin-left: 20px;
   margin-bottom: 10px;
   padding: 0px 30px;
 `;
@@ -73,6 +73,23 @@ export const Info = styled(motion.div)`
     font-size: 20px;
     color: white;
   }
+`;
+export const SliderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const SliderPrevBtn = styled.div`
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+export const SliderNextBtn = styled.div`
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 /** ----------------- Overlay 관련 css ------------------------ */

@@ -12,6 +12,7 @@ export const Nav = styled(motion.nav)`
   padding: 20px 60px;
   color: white;
   z-index: 99;
+  background-color: black;
 `;
 
 export const Col = styled.div`
@@ -100,7 +101,7 @@ export const logoVar = {
 
 export const navVar = {
   top: {
-    backgroundColor: "rgba(0,0,0,0)",
+    backgroundColor: "rgba(0,0,0,1)",
   },
   scroll: {
     backgroundColor: "rgba(0,0,0,1)",

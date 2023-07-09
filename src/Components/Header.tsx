@@ -54,7 +54,7 @@ function Header() {
     history.push(`/search?keyword=${data.keyword}`);
   };
   return (
-    <Nav variants={navVar} animate={navAnimation} initial={"top"}>
+    <Nav variants={navVar} animate={"top"}>
       <Col>
         <Logo
           variants={logoVar}
