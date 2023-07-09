@@ -15,7 +15,12 @@ import {
 } from "../styled-components/MovieStyled";
 import MovieOverlay from "./MovieOverlay";
 
-import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleRight,
+  faAngleLeft,
+  faPlay,
+  faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const infoVar = {
@@ -135,6 +140,19 @@ const MovieSlider = (props: IBannerProps) => {
                   >
                     <Info variants={infoVar}>
                       <h4>{movie.title}</h4>
+                      <div className="hoverbtn">
+                        <div className="playBtn">
+                          <FontAwesomeIcon icon={faPlay} />
+                        </div>
+                        <div className="plusBtn">
+                          <FontAwesomeIcon icon={faCirclePlus} />
+                        </div>
+                      </div>
+                      <div className="hoverOverview">
+                        {movie.overview
+                          ? movie.overview
+                          : "요약이 제공되지 않습니다."}
+                      </div>
                     </Info>
                   </Box>
                 ))}

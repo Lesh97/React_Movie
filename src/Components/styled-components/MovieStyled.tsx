@@ -60,20 +60,7 @@ export const Box = styled(motion.div)<{ bgPhoto: string }>`
     transform-origin: center right;
   }
 `;
-// Box :hover시에 보이는 설명
-export const Info = styled(motion.div)`
-  padding: 10px;
-  background-color: #2f2f2f;
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  h4 {
-    text-align: center;
-    font-size: 20px;
-    color: white;
-  }
-`;
+
 export const SliderContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -90,6 +77,42 @@ export const SliderNextBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+/** ----------------- Slider :Hover 관련 css ------------------------ */
+// Box :hover시에 보이는 설명
+export const Info = styled(motion.div)`
+  padding: 10px;
+  background-color: #1d1d1d;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  h4 {
+    text-align: left;
+    font-size: 18px;
+    color: white;
+  }
+  .hoverbtn {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin: 5px 0px;
+    .playBtn {
+      font-size: 15px;
+      margin-left: 2px;
+      margin-right: 20px;
+    }
+    .plusBtn {
+      font-size: 12px;
+    }
+  }
+  .hoverOverview {
+    font-size: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 /** ----------------- Overlay 관련 css ------------------------ */

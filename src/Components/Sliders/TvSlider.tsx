@@ -9,8 +9,18 @@ import {
   Info,
   Row,
   Slider,
+  SliderPrevBtn,
+  SliderNextBtn,
+  SliderContainer,
 } from "../styled-components/MovieStyled";
 import TvOverlay from "./TvOverlay";
+import {
+  faAngleRight,
+  faAngleLeft,
+  faPlay,
+  faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const infoVar = {
   hover: {
@@ -58,15 +68,30 @@ const offset = 6;
 
 const TvSlider = (props: IBannerProps) => {
   const history = useHistory();
-
+  const [next, setNext] = useState(true);
   const [index, setIndex] = useState(0);
   const increaseIndex = () => {
     if (props.data) {
       if (leaving) return;
-      toggleLeaving();
-      const totalSeries = props.data.results.length - 1;
-      const maxIndex = Math.floor(totalSeries / offset) - 1;
-      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+      else {
+        toggleLeaving();
+        const totalMovies = props.data.results.length - 1;
+        const maxIndex = Math.floor(totalMovies / offset) - 1;
+        setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+        setNext(() => true);
+      }
+    }
+  };
+  const decreaseIndex = () => {
+    if (props.data) {
+      if (leaving) return;
+      else {
+        toggleLeaving();
+        const totalMovies = props.data.results.length - 1;
+        const maxIndex = Math.floor(totalMovies / offset) - 1;
+        setIndex((prev) => (prev === 0 ? maxIndex - 1 : prev - 1));
+        setNext(() => false);
+      }
     }
   };
   const [leaving, setLeaving] = useState(false);
@@ -80,36 +105,62 @@ const TvSlider = (props: IBannerProps) => {
     <>
       <Slider>
         <SliderTitle>{props.title}</SliderTitle>
-        <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-          <Row
-            variants={rowVar}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            key={props.category + index}
-            transition={{ type: "tween", duration: 1 }}
+        <SliderContainer>
+          <SliderPrevBtn onClick={decreaseIndex}>
+            <FontAwesomeIcon icon={faAngleLeft} />
+          </SliderPrevBtn>
+          <AnimatePresence
+            custom={next}
+            initial={false}
+            onExitComplete={toggleLeaving}
           >
-            {props.data?.results
-              .slice(1)
-              .slice(offset * index, offset * index + offset)
-              .map((Series) => (
-                <Box
-                  layoutId={Series.id + ""}
-                  key={props.category + Series.id}
-                  variants={boxVar}
-                  onClick={() => onBoxClicked(Series.id)}
-                  whileHover="hover"
-                  initial="normal"
-                  transition={{ type: "tween" }}
-                  bgPhoto={makeImagePath(Series?.backdrop_path, "w500")}
-                >
-                  <Info variants={infoVar}>
-                    <h4>{Series.name}</h4>
-                  </Info>
-                </Box>
-              ))}
-          </Row>
-        </AnimatePresence>
+            <Row
+              variants={rowVar}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              key={props.category + index}
+              custom={next}
+              transition={{ type: "tween", duration: 1 }}
+            >
+              {props.data?.results
+                .slice(1)
+                .slice(offset * index, offset * index + offset)
+                .map((Series) => (
+                  <Box
+                    layoutId={Series.id + ""}
+                    key={props.category + Series.id}
+                    variants={boxVar}
+                    onClick={() => onBoxClicked(Series.id)}
+                    whileHover="hover"
+                    initial="normal"
+                    transition={{ type: "tween" }}
+                    bgPhoto={makeImagePath(Series?.backdrop_path, "w500")}
+                  >
+                    <Info variants={infoVar}>
+                      <h4>{Series.name}</h4>
+                      <div className="hoverbtn">
+                        <div className="playBtn">
+                          <FontAwesomeIcon icon={faPlay} />
+                        </div>
+                        <div className="plusBtn">
+                          <FontAwesomeIcon icon={faCirclePlus} />
+                        </div>
+                      </div>
+                      <div className="hoverOverview">
+                        {Series.overview
+                          ? Series.overview
+                          : "요약이 제공되지 않습니다."}
+                      </div>
+                    </Info>
+                  </Box>
+                ))}
+            </Row>
+          </AnimatePresence>
+          <SliderNextBtn onClick={increaseIndex}>
+            <FontAwesomeIcon icon={faAngleRight} />
+          </SliderNextBtn>
+        </SliderContainer>
       </Slider>
       {bigMovieMatch ? (
         <>
