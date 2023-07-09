@@ -61,6 +61,28 @@ export interface IGetCredits {
     }
   ];
 }
+
+export interface ISearchResult {
+  id: number;
+  name?: string;
+  title?: string;
+  backdrop_path: string;
+  poster_path: string;
+  vote_average: number;
+  overview: string;
+  original_title: string;
+  release_date?: string;
+  first_air_date?: string;
+}
+
+export interface IGetSearch {
+  page: number;
+  results: ISearchResult[];
+  total_pages: number;
+  total_results: number;
+  dates: string;
+}
+
 //영화 api 내보내기
 export function getMovies(category: string) {
   return fetch(
@@ -102,6 +124,23 @@ export function getSeriesDetail(tv_id: string) {
 export function getSeriesCredit(tv_id: string) {
   return fetch(
     `${BASE_PATH}/tv/${tv_id}/credits?api_key=${API_KEY}&language=ko-KR`
+  ).then((response) => {
+    return response.json();
+  });
+}
+
+//영화 , 시리즈 검색하기
+export function getSearchMovie(keyword: string) {
+  return fetch(
+    `${BASE_PATH}/search/movie?api_key=${API_KEY}&language=ko-KR&query=${keyword}&page=1`
+  ).then((response) => {
+    return response.json();
+  });
+}
+
+export function getSearchTv(keyword: string) {
+  return fetch(
+    `${BASE_PATH}/search/tv?api_key=${API_KEY}&language=ko-KR&query=${keyword}&page=1`
   ).then((response) => {
     return response.json();
   });

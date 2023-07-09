@@ -83,7 +83,7 @@ export const SliderNextBtn = styled.div`
 // Box :hover시에 보이는 설명
 export const Info = styled(motion.div)`
   padding: 10px;
-  background-color: #1d1d1d;
+  background-color: rgba(75, 75, 75, 0.7);
   opacity: 0;
   position: absolute;
   width: 100%;
