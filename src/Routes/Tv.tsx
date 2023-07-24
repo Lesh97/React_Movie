@@ -1,7 +1,6 @@
 import { useQuery } from "react-query";
 import { getSeries, IGetResult } from "../api";
 import { makeImagePath } from "../utils";
-import MovieSlider from "../Components/Sliders/MovieSlider";
 import {
   Banner,
   Overview,

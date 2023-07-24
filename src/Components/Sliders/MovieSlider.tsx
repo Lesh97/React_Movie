@@ -42,7 +42,7 @@ const boxVar = {
     scale: 1.5,
     y: -50,
     transition: {
-      delay: 0.5,
+      delay: 0.3,
       duration: 0.3,
       type: "tween",
     },
@@ -55,6 +55,7 @@ const rowVar = {
   },
   visible: {
     x: 0,
+    y: 0,
   },
   exit: (next: boolean) => {
     return { x: next ? -window.innerWidth : window.innerWidth };

@@ -9,7 +9,7 @@ export const LoginWrapper = styled.div`
 
 export const LoginBox = styled.div`
   position: relative;
-  top: 300px;
+  top: 200px;
   display: flex;
   justify-content: center;
   align-items: center;

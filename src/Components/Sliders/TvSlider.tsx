@@ -49,14 +49,14 @@ const boxVar = {
 };
 
 const rowVar = {
-  hidden: {
-    x: window.outerWidth - 10,
+  hidden: (next: boolean) => {
+    return { x: next ? window.innerWidth : -window.innerWidth };
   },
   visible: {
     x: 0,
   },
-  exit: {
-    x: -window.outerWidth + 10,
+  exit: (next: boolean) => {
+    return { x: next ? -window.innerWidth : window.innerWidth };
   },
 };
 interface IBannerProps {
@@ -99,7 +99,7 @@ const TvSlider = (props: IBannerProps) => {
   const onBoxClicked = (seriesId: number) => {
     history.push(`/tv/${seriesId}`);
   };
-  const bigMovieMatch = useRouteMatch<{ seriesId: string }>("/tv/:seriesId");
+  const bigTvMatch = useRouteMatch<{ seriesId: string }>("/tv/:seriesId");
 
   return (
     <>
@@ -162,10 +162,10 @@ const TvSlider = (props: IBannerProps) => {
           </SliderNextBtn>
         </SliderContainer>
       </Slider>
-      {bigMovieMatch ? (
+      {bigTvMatch ? (
         <>
           <TvOverlay
-            tv_id={bigMovieMatch.params.seriesId}
+            tv_id={bigTvMatch.params.seriesId}
             category={props.category}
             data={props.data}
           ></TvOverlay>
