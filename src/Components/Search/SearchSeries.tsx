@@ -43,7 +43,7 @@ function SearchSeriesResults({ seriesData }: ISeriesprops) {
     <>
       <SearchTtile>시리즈</SearchTtile>
       <SearchSeriesGrid>
-        {seriesData.results.map((data) => (
+        {seriesData?.results.map((data) => (
           <ResultsBox
             variants={boxVar}
             initial="initial"
